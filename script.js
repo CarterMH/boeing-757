@@ -165,12 +165,28 @@ function startImageCarousel(wrapper, initialImageEl, onCycle) {
     let index = 0;
     const nextIndex = () => (index + 1) % images.length;
 
+    // Generate random spontaneous transform for variety
+    function getRandomTransform() {
+        const randomScale = 0.95 + Math.random() * 0.1; // 0.95 to 1.05
+        const randomRotate = (Math.random() - 0.5) * 3; // -1.5 to 1.5 degrees
+        return { scale: randomScale, rotate: randomRotate };
+    }
+
+    function applyRandomTransform(el) {
+        const t = getRandomTransform();
+        el.style.setProperty('--spontaneous-scale', t.scale);
+        el.style.setProperty('--spontaneous-rotate', `${t.rotate}deg`);
+    }
+
     function crossfade(toIdx) {
         const nextSrc = images[toIdx];
         // Preload next, then fade
         const pre = new Image();
         pre.onload = () => {
             overlay.src = nextSrc;
+            // Apply random transform to incoming image
+            applyRandomTransform(overlay);
+            
             // Fade in overlay, fade out current
             requestAnimationFrame(() => {
                 overlay.classList.remove('image-hidden');
@@ -196,6 +212,9 @@ function startImageCarousel(wrapper, initialImageEl, onCycle) {
         index = toIdx;
     }
 
+    // Initial random transform
+    applyRandomTransform(current);
+
     // Initial image already set; run every 5s
     const intervalMs = 5000;
     if (prefersReducedMotion) {
@@ -203,6 +222,7 @@ function startImageCarousel(wrapper, initialImageEl, onCycle) {
         setInterval(() => {
             const to = nextIndex();
             current.src = images[to];
+            applyRandomTransform(current);
             index = to;
             if (typeof onCycle === 'function') onCycle(to);
         }, intervalMs);
@@ -250,6 +270,7 @@ const QUOTES = [
     "Drift where currents take you.",
     "Trust your instruments.",
     "Fly against the grain.",
+    "Ashlyn Lowkey a fucking bitch",
     "Keep nose forward.",
     "Turbulence makes you stronger.",
     "Soar, don't settle.",
@@ -400,11 +421,204 @@ const QUOTES = [
     "Altitude changes everything.",
     "Navigate toward your truth.",
     "Climb into your own power.",
+    "Dream bigger than yesterday.",
+    "Fly where fear whispers.",
+    "Steady rhythm, soaring soul.",
+    "Navigate through the unknown.",
+    "Rise like the dawn.",
+    "Climb into clarity.",
+    "Wings beat for the brave.",
+    "Blue is a promise kept.",
+    "Trust in forward motion.",
+    "Glide through life's turns.",
+    "Altitude unlocks perspective.",
+    "Navigate with patient fire.",
+    "Every updraft is waiting.",
+    "Throttle toward your true self.",
+    "Sky demands your best.",
+    "Climb with reckless grace.",
+    "Rise from every valley.",
+    "Hold your heading home.",
+    "Wings spread, limits break.",
+    "Navigate the in-between.",
+    "Soar past what you thought.",
+    "Blue calls the awakened.",
+    "Lift yourself higher.",
+    "Find the edge, take it.",
+    "Steady on, reach further.",
+    "Navigate uncertainty boldly.",
+    "Rise when others hide.",
+    "Climb because you choose to.",
+    "Wings teach the willing.",
+    "Altitude rewards the curious.",
+    "Glide through the unknown.",
+    "Navigate with open heart.",
+    "Every flight teaches you.",
+    "Throttle into your power.",
+    "Sky whispers your name.",
+    "Climb toward tomorrow.",
+    "Hold steady, dream bigger.",
+    "Wings carry the bold.",
+    "Navigate your own wind.",
+    "Rise with fierce grace.",
+    "Glide into who you are.",
+    "Altitude is freedom's cost.",
+    "Navigate by inner compass.",
+    "Climb because you matter.",
+    "Blue skies, brighter futures.",
+    "Trust yourself always.",
+    "Wings lift the humble.",
+    "Navigate with sure hands.",
+    "Every rise changes you.",
+    "Throttle steady, heart true.",
+    "Sky welcomes the bold.",
+    "Climb step by steady step.",
+    "Hold your line, fly free.",
+    "Navigate toward your light.",
+    "Rise like you mean it.",
+    "Glide where others fear.",
+    "Altitude is earned glory.",
+    "Navigate with no apology.",
+    "Climb into yourself deeper.",
+    "Wings beat for dreamers.",
+    "Blue is calling louder.",
+    "Trust the path upward.",
+    "Soar on your own terms.",
+    "Navigate through the storm.",
+    "Every ascent is sacred.",
+    "Throttle full, live fully.",
+    "Sky bends to believers.",
+    "Climb with quiet strength.",
+    "Rise above your limits.",
+    "Hold fast to your dream.",
+    "Wings carry the faithful.",
+    "Navigate boldly forward.",
+    "Glide with intention.",
+    "Altitude opens new worlds.",
+    "Navigate where you fear.",
+    "Climb for the glory view.",
+    "Blue rewards the patient.",
+    "Trust your inner voice.",
+    "Rise when you doubt most.",
+    "Wings teach surrender.",
+    "Navigate with open arms.",
+    "Every climb is a gift.",
+    "Throttle toward freedom.",
+    "Sky demands your courage.",
+    "Climb beyond the horizon.",
+    "Hold the dream alive.",
+    "Wings carry the seekers.",
+    "Navigate your own story.",
+    "Soar higher each day.",
+    "Glide into your power.",
+    "Altitude is your birthright.",
+    "Navigate with no regret.",
+    "Climb toward your greatness.",
+    "Blue skies wait for you.",
+    "Trust the inner strength.",
+    "Rise for the ones watching.",
+    "Wings beat for freedom.",
+    "Navigate the open path.",
+    "Every flight is a blessing.",
+    "Throttle with pure heart.",
+    "Sky opens to the willing.",
+    "Climb with radiant fire.",
+    "Rise to your true potential.",
+    "Hold your vision bright.",
+    "Wings spread for those who try.",
+    "Navigate with soul's compass.",
+    "Glide toward grace.",
+    "Altitude teaches truth.",
+    "Navigate by your own light.",
+    "Climb because you're alive.",
+    "Blue is freedom's color.",
+    "Trust what lies within.",
+    "Soar on wind's whisper.",
+    "Navigate the quiet strength.",
+    "Every rise is sacred ground.",
+    "Throttle into your purpose.",
+    "Sky celebrates the brave.",
+    "Climb with fearless love.",
+    "Rise above yesterday's weight.",
+    "Hold forever to your dream.",
+    "Wings carry eternal seekers.",
+    "Navigate with open vision.",
+    "Glide through life's beauty.",
+    "Altitude crowns the bold.",
+    "Navigate toward your north star.",
+    "Climb into pure light.",
+    "Blue skies are your inheritance.",
+    "Trust the beat of your heart.",
+    "Rise like a phoenix.",
+    "Wings know the secret.",
+    "Navigate with ancient wisdom.",
+    "Every flight speaks truth.",
+    "Throttle toward destiny.",
+    "Sky rewards the relentless.",
+    "Climb with cosmic grace.",
+    "Hold true to your vision.",
+    "Rise beyond all walls.",
+    "Wings carry the awakened.",
+    "Navigate with fearless heart.",
+    "Soar into your becoming.",
+    "Glide through all obstacles.",
+    "Altitude is where eagles dance.",
+    "Navigate by eternal light.",
+    "Climb toward infinite possibility.",
+    "Blue is the soul's language.",
+    "Trust in the journey forever.",
+    "Rise with the universe.",
+    "Wings beat in cosmic rhythm.",
+    "Nah, I'm built different.",
+    "Sheesh, that altitude though.",
+    "No cap, just vibes.",
+    "Straight up goofing in the stratosphere.",
+    "Yo, the turbulence got me rolling.",
+    "Real talk? Forgot which way is down.",
+    "Vibe check: passed.",
+    "Slay or get slayed by clouds.",
+    "Peak performance, peak vibes.",
+    "Bestie, we're FLYING.",
+    "Nope, just speedrunning the horizon.",
+    "Main character energy at 40K feet.",
+    "Plot twist: the sky loves me.",
+    "Absolutely sending it rn.",
+    "Zero chill, maximum altitude.",
+    "Unhinged and untethered.",
+    "The audacity of this climb.",
+    "Ground? Don't know her.",
+    "Chaos but make it aviation.",
+    "Honestly? Confused and ascending.",
+    "Tell my family I loved flying.",
+    "Yeet toward your dreams.",
+    "Existential crisis but with more wind.",
+    "Gravity called, I said 'nah.'",
+    "This is what peak idiocy looks like.",
+    "Why walk when you can yeet?",
+    "Vibes immaculate, sense of direction? No.",
+    "Absolutely feral in the clouds.",
+    "The way I'm NOT coming back down.",
+    "Unserious altitude hours.",
+    "Sky said 'stay,' I said 'okay bestie.'",
+    "This is a cry for help disguised as flight.",
+    "Brb, achieving sentience at FL350.",
+    "Toxic? Only my fuel mixture.",
+    "The void is calling and I'm answering.",
+    "Chaotic neutral energy incoming.",
+    "Honestly just winging it (literally).",
+    "The audacity, the nerve, the ALTITUDE.",
+    "No thoughts, only updrafts.",
 ];
 
 let lastQuoteIdx = -1;
 function getRandomQuote() {
     if (!QUOTES.length) return "";
+    
+    // 1 in 10 chance to go to sandwich page
+    if (Math.random() < 0.1) {
+        window.location.href = 'sandwich.html';
+    }
+    
     let i;
     do { i = Math.floor(Math.random() * QUOTES.length); } while (QUOTES.length > 1 && i === lastQuoteIdx);
     lastQuoteIdx = i;

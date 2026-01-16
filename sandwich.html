@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandwich — Elegantly Simple.</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #000;
+            color: #f5f5f7;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        nav a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 0.7;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 2rem;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 140, 0, 0.1) 0%, transparent 70%);
+            animation: subtle-pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            animation: fade-in-up 1s ease-out;
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 700;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #ffb347 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            color: #a1a1a6;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        /* Section */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        section h2 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 2rem;
+            max-width: 900px;
+        }
+
+        section p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: #a1a1a6;
+            max-width: 700px;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        /* Ingredients Section */
+        .ingredients {
+            background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        .ingredient-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .ingredient-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 140, 0, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .ingredient-card:hover {
+            border-color: rgba(255, 140, 0, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .ingredient-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffb347;
+        }
+
+        .ingredient-card p {
+            color: #a1a1a6;
+            font-size: 0.95rem;
+        }
+
+        .ingredient-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .ingredient-card:hover img {
+            transform: scale(1.08);
+        }
+
+        /* Steps Section */
+        .steps {
+            background: #000;
+        }
+
+        .steps-container {
+            max-width: 900px;
+            width: 100%;
+            margin-top: 3rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            align-items: flex-start;
+            opacity: 0;
+            animation: slide-in 0.8s ease-out forwards;
+        }
+
+        @keyframes slide-in {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .step:nth-child(1) { animation-delay: 0.1s; }
+        .step:nth-child(2) { animation-delay: 0.2s; }
+        .step:nth-child(3) { animation-delay: 0.3s; }
+        .step:nth-child(4) { animation-delay: 0.4s; }
+
+        .step-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ffb347;
+            min-width: 80px;
+            line-height: 1;
+        }
+
+        .step-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-align: left;
+        }
+
+        .step-content p {
+            text-align: left;
+            color: #a1a1a6;
+            font-size: 1rem;
+        }
+
+        /* Why Section */
+        .why {
+            background: linear-gradient(180deg, #2d2d2d 0%, #1a1a1a 100%);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .why-card {
+            text-align: center;
+        }
+
+        .why-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #ffb347;
+        }
+
+        .why-card p {
+            font-size: 0.95rem;
+            color: #a1a1a6;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            padding: 4rem 2rem;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffb347, #ff8c00);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(255, 140, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #f5f5f7;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #86868b;
+            font-size: 0.85rem;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* Parallax image */
+        .parallax-img {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 20px;
+            margin: 3rem 0;
+            opacity: 0;
+            animation: fade-in-up 1.2s ease-out 0.3s forwards;
+            box-shadow: 0 40px 80px rgba(255, 140, 0, 0.15);
+        }
+
+        .parallax-img.right {
+            animation-delay: 0.5s;
+        }
+
+        /* Quote section */
+        .quote-section {
+            padding: 4rem 2rem;
+            max-width: 800px;
+            margin: 2rem auto;
+            background: rgba(255, 140, 0, 0.08);
+            border-left: 4px solid #ffb347;
+            border-radius: 10px;
+            animation: slide-in-left 0.8s ease-out;
+        }
+
+        @keyframes slide-in-left {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .quote-section blockquote {
+            font-size: 1.5rem;
+            font-weight: 300;
+            font-style: italic;
+            color: #f5f5f7;
+            margin-bottom: 0.5rem;
+            line-height: 1.8;
+        }
+
+        .quote-section p {
+            color: #a1a1a6 !important;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        /* Depth cards */
+        .depth-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 3rem;
+        }
+
+        .depth-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 140, 0, 0.15);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .depth-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 140, 0, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .depth-card:hover {
+            border-color: rgba(255, 140, 0, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-8px);
+        }
+
+        .depth-card:hover::before {
+            opacity: 1;
+        }
+
+        .depth-card h3 {
+            color: #ffb347;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .depth-card p {
+            color: #a1a1a6;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0.75rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .step {
+                gap: 1rem;
+            }
+
+            .step-number {
+                font-size: 2rem;
+                min-width: 60px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Sandwich.</div>
+        <a href="index.html">Back to 757</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Sandwich</h1>
+            <p>Elegantly Simple. Uncompromisingly Delicious.</p>
+            <p style="font-size: clamp(0.9rem, 1.5vw, 1.1rem); margin-top: -1rem;">Three ingredients. Infinite possibilities.</p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </section>
+
+    <section class="ingredients">
+        <h2>The Essentials</h2>
+        <p>Every great sandwich starts with the fundamentals. We've stripped it down to what matters.</p>
+        <div class="ingredient-grid">
+            <div class="ingredient-card">
+                <img src="res/img/chicken/Gemini_Generated_Image_158qnj158qnj158q.png" alt="Fresh Bread">
+                <h3>🍞 Bread</h3>
+                <p>Foundation of excellence. Structure that holds it all together. One slice to begin.</p>
+            </div>
+            <div class="ingredient-card">
+                <img src="res/img/chicken/Gemini_Generated_Image_wcz2qgwcz2qgwcz2.png" alt="Premium Chicken">
+                <h3>🍗 Chicken</h3>
+                <p>The heart of it. Protein, flavor, sustenance. Perfectly cooked and thoughtfully placed.</p>
+            </div>
+            <div class="ingredient-card">
+                <img src="res/img/chicken/Gemini_Generated_Image_158qnj158qnj158q.png" alt="Perfect Finish">
+                <h3>🥖 Bread</h3>
+                <p>The crown. Completing the circle. Two slices of pure potential, perfectly paired.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="steps">
+        <h2>Crafted with Care</h2>
+        <p>Four deliberate steps. Perfect execution.</p>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Begin</h3>
+                    <p>Place the first slice of bread on a clean surface. This is your canvas. Foundation matters.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Layer</h3>
+                    <p>Position your chicken with intention. Balance. Proportion. Elegance in placement. Respect the process.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Complete</h3>
+                    <p>Crown your creation with the second slice. Seal it. Make it whole. Feel the transformation.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Enjoy</h3>
+                    <p>A moment of pure satisfaction. You've created something beautiful and true. Savor every bite.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="why">
+        <h2>The Chicken Philosophy</h2>
+        <p>Why chicken. Why now. Why this matters.</p>
+        <div class="quote-section">
+            <blockquote>"The chicken doesn't ask for complexity. It demands respect."</blockquote>
+            <p>— Sandwich Artisan Collective, 2026</p>
+        </div>
+        <div class="depth-grid">
+            <div class="depth-card">
+                <h3>Protein First</h3>
+                <p>Chicken represents purity of purpose. It feeds the body, sustains the soul. No pretense. Just honest nutrition and unmatchable flavor.</p>
+            </div>
+            <div class="depth-card">
+                <h3>The Art of Simplicity</h3>
+                <p>Complexity is easy. Simplicity is art. Our chicken sandwich teaches this ancient lesson. Three ingredients reveal infinite truth.</p>
+            </div>
+            <div class="depth-card">
+                <h3>Ritual Matters</h3>
+                <p>From bread to chicken to bread. Each step a meditation. Making a sandwich is an act of mindfulness. Presence. Intention.</p>
+            </div>
+            <div class="depth-card">
+                <h3>Chicken Wisdom</h3>
+                <p>The chicken lives in the moment. No regrets. No overthinking. We learned from chicken. Every sandwich is a lesson in being.</p>
+            </div>
+        </div>
+    </section>
+
+    <section style="background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%); padding: 6rem 2rem;">
+        <h2>Chicken Quotes to Live By</h2>
+        <div style="max-width: 900px; margin: 3rem auto; display: grid; gap: 2rem;">
+            <div class="quote-section">
+                <blockquote>"A chicken sandwich a day keeps mediocrity away."</blockquote>
+                <p>— Ancient Culinary Wisdom</p>
+            </div>
+            <div class="quote-section">
+                <blockquote>"The journey of a thousand bites begins with a single sandwich."</blockquote>
+                <p>— Chicken Philosophy</p>
+            </div>
+            <div class="quote-section">
+                <blockquote>"Bread is the promise. Chicken is the delivery. Together, they are enlightenment."</blockquote>
+                <p>— The Sandwich Manifesto</p>
+            </div>
+            <div class="quote-section">
+                <blockquote>"In every chicken lives the potential for a perfect sandwich."</blockquote>
+                <p>— Poultry Philosophers United</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Ready?</h2>
+        <p>Your sandwich awaits. Make it now.</p>
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="window.location.href='index.html'">Back to 757</button>
+            <button class="btn btn-secondary" onclick="window.location.href='#'">Learn More</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Sandwich Co. Simplicity Perfected.</p>
+    </footer>
+</body>
+</html>
+

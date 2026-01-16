@@ -193,7 +193,9 @@ body {
     box-shadow:
         0 25px 50px rgba(0, 0, 0, 0.4),
         0 0 50px rgba(255, 140, 0, 0.1);
-    transform: translate(-50%, -50%) rotateX(var(--rx)) rotateY(var(--ry));
+    --spontaneous-scale: 1;
+    --spontaneous-rotate: 0deg;
+    transform: translate(-50%, -50%) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--spontaneous-scale)) rotate(var(--spontaneous-rotate));
     transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.6s ease;
     will-change: transform, opacity;
     z-index: 20;
